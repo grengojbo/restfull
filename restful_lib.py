@@ -60,8 +60,14 @@ class Connection:
     def request_delete(self, resource, args = None, headers={}):
         return self.request(resource, "delete", args, headers=headers)
         
+    def request_head(self, resource, args = None, headers={}):
+        return self.request(resource, "head", args, headers=headers)
+        
     def request_post(self, resource, args = None, body = None, filename=None, headers={}):
         return self.request(resource, "post", args , body = body, filename=filename, headers=headers)
+        
+    def request_put(self, resource, args = None, body = None, filename=None, headers={}):
+        return self.request(resource, "put", args , body = body, filename=filename, headers=headers)
         
     def get_content_type(self, filename):
         extension = filename.split('.')[-1]

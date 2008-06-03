@@ -158,6 +158,9 @@ class Store():
         
         return self.conn.request_get(CONTENT_ENDPOINT, args=passed_args, headers={'Content-type':'application/x-www-form-urlencoded'} )
         
+    def _list_snapshots(self, passed_args={}):
+        return self.conn.request_get(SNAPSHOTS, args=passed_args, headers={}) 
+        
 ##############################################################################
 # Convenience Functions
 ##############################################################################
@@ -255,5 +258,5 @@ class GAE_Store(Store):
         self.base_store_url = base_store_url
         # Split the given URL
         if base_store_url:
-            self.conn = GAE_Connection(base_store_url)
+            self.conn = GAE_Connection(base_store_url, username, password)
 

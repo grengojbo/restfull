@@ -33,6 +33,10 @@ import mimetypes
 
 from cStringIO import StringIO
 
+class ConnectionError(Exception):
+    def __str__(self):
+        return "Connection failed"
+
 class Connection:
     def __init__(self, base_url, username=None, password=None):
         self.base_url = base_url

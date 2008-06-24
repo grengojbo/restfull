@@ -111,13 +111,17 @@ class Connection:
             if not headers.get('Content-Type', None):
                 headers['Content-Type']='text/xml'
             headers['Content-Length'] = str(len(body))        
-        else: 
+        else:
+            if headers.has_key('Content-Length'):
+                del headers['Content-Length']
+            
             headers['Content-Type']='text/xml'
             
         if args:
             path += u"?" + urllib.urlencode(args)
             
         request_path = []
+        # Normalise the / in the url path
         if self.path != "/":
             if self.path.endswith('/'):
                 request_path.append(self.path[:-1])
@@ -129,5 +133,5 @@ class Connection:
                 request_path.append(path)
         
         resp, content = self.h.request(u"%s://%s%s" % (self.scheme, self.host, u'/'.join(request_path)), method.upper(), body=body, headers=headers )
-        
+        # TODO trust the return encoding type in the decode?
         return {u'headers':resp, u'body':content.decode('UTF-8')}

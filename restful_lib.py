@@ -115,10 +115,15 @@ class Connection:
             if headers.has_key('Content-Length'):
                 del headers['Content-Length']
             
-            headers['Content-Type']='text/xml'
+            headers['Content-Type']='text/plain'
             
-        if args:
-            path += u"?" + urllib.urlencode(args)
+            if args:
+                if method == "get":
+                    path += u"?" + urllib.urlencode(args)
+                elif method == "put" or method == "post":
+                    headers['Content-Type']='application/x-www-form-urlencoded'
+                    body = urllib.urlencode(args)
+
             
         request_path = []
         # Normalise the / in the url path

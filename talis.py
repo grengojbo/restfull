@@ -4,7 +4,7 @@ from urllib2 import urlparse
 
 from restful_lib import Connection
 
-from gae_restful_lib import GAE_Connection
+#from gae_restful_lib import GAE_Connection
 
 from datetime import datetime
 
@@ -259,4 +259,4 @@ class GAE_Store(Store):
         # Split the given URL
         if base_store_url:
             self.conn = GAE_Connection(base_store_url, username, password)
-
+        

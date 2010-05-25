@@ -6,7 +6,7 @@ import sys
 DIRNAME = os.path.dirname(__file__)
 
 # Dynamically calculate the version based on django.VERSION.
-version = "0.1.0"
+version = "0.1.1"
 
 setup(name='restfull',
     version=version,

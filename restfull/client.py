@@ -27,7 +27,7 @@ import urllib
 import base64
 from base64 import encodestring
 
-from mimeTypes import *
+from mimetypes import *
 
 import mimetypes
 

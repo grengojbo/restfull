@@ -1,5 +1,5 @@
 
-from restful_lib import Connection, ConnectionError
+from restfull.client import Connection, ConnectionError
 
 # from gae_restful_lib import GAE_Connection
 

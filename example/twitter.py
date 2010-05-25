@@ -1,4 +1,4 @@
-from restful_lib import Connection, ConnectionError
+from restfull.client import Connection, ConnectionError
 from microblog_exceptions import MicroBlogMsgLimitExceeded
 
 class FailWhale(Exception):

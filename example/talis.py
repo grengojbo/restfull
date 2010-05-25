@@ -2,7 +2,7 @@ import urllib2
 
 from urllib2 import urlparse
 
-from restful_lib import Connection
+from restfull.client import Connection
 
 #from gae_restful_lib import GAE_Connection
 

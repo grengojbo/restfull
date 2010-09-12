@@ -22,9 +22,12 @@ __author__ = "Benjamin O'Steen <bosteen@gmail.com>"
 __version__ = '0.1'
 
 import httplib2
-import urlparse
+#import urlparse
 import urllib
 import base64
+import urllib2
+from urllib2 import urlparse
+import simplejson
 from base64 import encodestring
 
 from mimetypes import *
@@ -39,7 +42,12 @@ class ConnectionError(Exception):
 
 class Connection:
     def __init__(self, base_url, username=None, password=None, path_cache=".cache"):
+        if base_url.endswith('/'):
+            base_url = base_url[:-1]
+
         self.base_url = base_url
+        self.response = None
+        self.status = None
         self.username = username
         m = mimeTypes()
         self.mimetypes = m.getDictionary()
@@ -140,3 +148,45 @@ class Connection:
         resp, content = self.h.request(u"%s://%s%s" % (self.scheme, self.host, u'/'.join(request_path)), method.upper(), body=body, headers=headers )
         # TODO trust the return encoding type in the decode?
         return {u'headers':resp, u'body':content.decode('UTF-8')}
+
+    def save(self, metod, resource, args={}, body=None):
+        """
+        metod post or put
+        """
+        self.response = self.request(resource, metod, args=args, body=body)
+        headers = self.response.get('headers')
+        self.status = headers.get('status', headers.get('Status'))
+
+        if self.status in ['200', 200, '201', 201]:
+            return simplejson.loads(self.response.get('body').encode('UTF-8'))
+        else:
+            return False
+
+    def delete(self, resource):
+        """
+        metod post or put
+        """
+        self.response = self.request_delete(resource)
+        headers = self.response.get('headers')
+        self.status = headers.get('status', headers.get('Status'))
+
+        if self.status in ['200', 200, '204', 204]:
+            return True
+        else:
+            return False
+
+    def search(self, query, args={}, headers={'Accept':'text/json'}):
+        """Low-level content box query - returns the message and response headers from the server.
+           You may be looking for Store.search instead of this."""
+
+        passed_args = {}
+        passed_args.update(args)
+        self.response = self.request(query, 'get', args=passed_args, headers=headers)
+        headers = self.response.get('headers')
+        self.status = headers.get('status', headers.get('Status'))
+
+        if self.status in ['200', 200, '204', 204]:
+            return simplejson.loads(self.response.get('body').encode('UTF-8'))
+        else:
+            return False
+
